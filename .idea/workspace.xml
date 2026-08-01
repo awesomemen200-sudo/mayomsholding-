@@ -12,9 +12,9 @@
       <change afterPath="$PROJECT_DIR$/backend/models.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/backend/templates/dashboard.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/backend/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/image/green-power-south-sudan.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/image/logicgate-security-logo.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/image/pawel-technologies-logo.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/images/green-power-south-sudan.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/images/logicgate-security-logo.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/images/pawel-technologies-logo.jpeg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
