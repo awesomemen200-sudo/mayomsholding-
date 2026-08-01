@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Mayom Holdings Admin</title>
+<style>
+  :root {
+    --bg: #0b1210;
+    --panel: #111b18;
+    --border: #1f2e28;
+    --gold: #c8a252;
+    --text: #e8e6df;
+    --muted: #8f9d97;
+    --new: #6ea8d9;
+    --contacted: #c8a252;
+    --closed: #6fae7a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+  }
+  header .brand {
+    font-family: Georgia, serif;
+    letter-spacing: 1px;
+  }
+  header .brand span { color: var(--gold); }
+  header .right { display: flex; align-items: center; gap: 16px; font-size: 14px; color: var(--muted); }
+  header a.logout {
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  header a.logout:hover { border-color: var(--gold); }
+
+  main { padding: 32px; max-width: 1100px; margin: 0 auto; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+  }
+  .stat .n { font-size: 28px; font-family: Georgia, serif; }
+  .stat .l { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel-head h2 { margin: 0; font-size: 16px; font-weight: 600; }
+  select#filter {
+    background: #0c1512;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 20px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; }
+  tr:last-child td { border-bottom: none; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .badge.new { background: rgba(110,168,217,0.15); color: var(--new); }
+  .badge.contacted { background: rgba(200,162,82,0.15); color: var(--contacted); }
+  .badge.closed { background: rgba(111,174,122,0.15); color: var(--closed); }
+
+  .row-actions select, .row-actions button {
+    font-size: 12px;
+    padding: 5px 8px;
+    background: #0c1512;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .row-actions button.delete { color: #d9765c; margin-left: 6px; }
+
+  .empty { padding: 40px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">MAYOM <span>HOLDINGS</span> — Admin</div>
+  <div class="right">
+    Signed in as {{ admin_username }}
+    <a class="logout" href="{{ url_for('logout') }}">Log out</a>
+  </div>
+</header>
+
+<main>
+  <div class="stats">
+    <div class="stat"><div class="n" id="stat-total">{{ stats.total }}</div><div class="l">Total enquiries</div></div>
+    <div class="stat"><div class="n" id="stat-new">{{ stats.new }}</div><div class="l">New</div></div>
+    <div class="stat"><div class="n" id="stat-contacted">{{ stats.contacted }}</div><div class="l">Contacted</div></div>
+    <div class="stat"><div class="n" id="stat-closed">{{ stats.closed }}</div><div class="l">Closed</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h2>Website enquiries</h2>
+      <select id="filter">
+        <option value="">All statuses</option>
+        <option value="new">New</option>
+        <option value="contacted">Contacted</option>
+        <option value="closed">Closed</option>
+      </select>
+    </div>
+
+    <table id="leads-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Organisation</th>
+          <th>Email</th>
+          <th>Interest</th>
+          <th>Received</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="leads-body">
+        <!-- populated by JS -->
+      </tbody>
+    </table>
+    <div id="empty" class="empty" style="display:none;">No enquiries yet.</div>
+  </div>
+</main>
+
+<script>
+const initialLeads = {{ leads | tojson }};
+
+function badge(status) {
+  return `<span class="badge ${status}">${status}</span>`;
+}
+
+function renderLeads(leads) {
+  const body = document.getElementById('leads-body');
+  const empty = document.getElementById('empty');
+  body.innerHTML = '';
+
+  if (!leads.length) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  leads.forEach(lead => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(lead.full_name)}</td>
+      <td>${escapeHtml(lead.organisation || '—')}</td>
+      <td>${escapeHtml(lead.email)}</td>
+      <td>${escapeHtml(lead.interest || '—')}</td>
+      <td>${escapeHtml(lead.created_at)}</td>
+      <td>${badge(lead.status)}</td>
+      <td class="row-actions">
+        <select data-id="${lead.id}" class="status-select">
+          <option value="new" ${lead.status === 'new' ? 'selected' : ''}>New</option>
+          <option value="contacted" ${lead.status === 'contacted' ? 'selected' : ''}>Contacted</option>
+          <option value="closed" ${lead.status === 'closed' ? 'selected' : ''}>Closed</option>
+        </select>
+        <button class="delete" data-id="${lead.id}">Delete</button>
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+
+  document.querySelectorAll('.status-select').forEach(sel => {
+    sel.addEventListener('change', async (e) => {
+      const id = e.target.dataset.id;
+      await fetch(`/api/leads/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: e.target.value })
+      });
+      refresh();
+    });
+  });
+
+  document.querySelectorAll('.delete').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const id = e.target.dataset.id;
+      if (!confirm('Delete this enquiry?')) return;
+      await fetch(`/api/leads/${id}`, { method: 'DELETE' });
+      refresh();
+    });
+  });
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.innerText = str ?? '';
+  return d.innerHTML;
+}
+
+async function refresh() {
+  const status = document.getElementById('filter').value;
+  const url = status ? `/api/leads?status=${status}` : '/api/leads';
+  const [leadsRes, statsRes] = await Promise.all([
+    fetch(url).then(r => r.json()),
+    fetch('/api/stats').then(r => r.json())
+  ]);
+  renderLeads(leadsRes);
+  document.getElementById('stat-total').innerText = statsRes.total;
+  document.getElementById('stat-new').innerText = statsRes.new;
+  document.getElementById('stat-contacted').innerText = statsRes.contacted;
+  document.getElementById('stat-closed').innerText = statsRes.closed;
+}
+
+document.getElementById('filter').addEventListener('change', refresh);
+
+// initial render from server-rendered data, then keep it fresh
+renderLeads(initialLeads);
+setInterval(refresh, 15000);
+</script>
+
+</body>
+</html>

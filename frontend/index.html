@@ -194,6 +194,11 @@
   .ins p{font-size:14.5px;color:var(--ink-soft);flex:1}
   .ins a{font-weight:600;font-size:14px;color:var(--river)}
 
+   /* subsidiary company card image */
+  .ins-media{width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--mist)}
+  .ins-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+  .ins:hover .ins-media img{transform:scale(1.04)}
+
   /* about */
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
   .about q{
@@ -276,6 +281,78 @@
   }
 </style>
 </head>
+<style>
+  /* Card image on top of each subsidiary card */
+  .ins-media {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
+    background: #0c1512;
+  }
+  .ins-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .ins:hover .ins-media img {
+    transform: scale(1.04);
+  }
+
+  /* Make the whole card a clean, organized column */
+  .ins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+  }
+  .ins {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #1f2e28;
+    background: #111b18;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .ins:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .ins-body {
+    padding: 20px 22px 24px;
+  }
+  .ins-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #c8a252;
+    margin-bottom: 10px;
+  }
+  .ins-body h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+  }
+  .ins-body p {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #b7c2bd;
+    margin-bottom: 14px;
+  }
+  .ins-body a {
+    font-size: 13px;
+    font-weight: 600;
+    color: #c8a252;
+    text-decoration: none;
+  }
+  .ins-body a:hover {
+    text-decoration: underline;
+  }
+</style>
+
 <body>
 
 <!-- ===== HEADER ===== -->
@@ -322,7 +399,7 @@
         <a class="btn btn-brass" href="#contact">Book a consultation</a>
         <a class="btn btn-ghost" href="#insights">Read our research</a>
       </div>
-      <p class="hero-note">Serving clients in Juba, Wau, Malakal &amp; the East African Community.</p>
+      <p class="hero-note">Serving clients in Juba, Wau, Malakal, Yei, Nimule, Panyagor &amp; many other cities across South Sudan.</p>
     </div>
 
     <aside class="desk" aria-label="Market snapshot">
@@ -367,9 +444,9 @@
       </article>
       <article class="svc reveal">
         <div class="svc-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div>
-        <span class="svc-for">For corporations &amp; lenders</span>
-        <h3>Risk Advisory</h3>
-        <p>Currency-exposure hedging, credit assessment, counterparty due diligence and political-risk frameworks — so volatility becomes something you price, not something you fear.</p>
+        <span class="svc-for">General Trading  &amp; Information Technology</span>
+        <h3>Supply Chain</h3>
+        <p>Versatile professional managing cross-functional operations in General Trading, Information Technology, Cybersecurity and Digital Forensics, and Engineering, specializing in tech infrastructure deployment and commercial supply chain optimization.</p>
         <a href="#contact">Map your exposure →</a>
       </article>
       <article class="svc reveal">
@@ -455,7 +532,61 @@
   </div>
 </section>
 
-<!-- ===== ABOUT ===== -->
+<!-- ===== SUBSIDIARY COMPANIES ===== -->
+<section id="OTHER COMPANIES">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">SUBSIDIARY COMPANIES</p>
+      <h2>OTHER COMPANIES.</h2>
+      <p>Mayomsholding's subsidiary companies includes the following listed below;.</p>
+    </div>
+    <div class="ins-grid">
+
+      <article class="ins reveal">
+        <div class="ins-media">
+          <img src="images/green-power-south-sudan.jpeg" alt="Green Power South Sudan — prepaid meter installation" loading="lazy">
+        </div>
+        <div class="ins-band"></div>
+        <div class="ins-body">
+          <div class="ins-meta"><span>GREEN POWER SOUTH SUDAN</span><span></span></div>
+          <h3>Lighting South sudan</h3>
+          <p> Green Power South Sudan delivers world-Class Solar and Electrical Solutions.</p>
+          <a href="https://www.greenpowerssd.com" target="_blank" rel="noopener">Request the brief about Green power ssd→</a>
+        </div>
+      </article>
+
+      <article class="ins reveal">
+        <div class="ins-media">
+          <img src="images/pawel-technologies-logo.jpeg" alt="Pawel Technologies Ltd logo" loading="lazy">
+        </div>
+        <div class="ins-band"></div>
+        <div class="ins-body">
+          <div class="ins-meta"><span>PAWEL TECHNOLOGIES</span><span></span></div>
+          <h3>Internet Service Provider </h3>
+          <p>At Pawel Technologies Ltd, we provide professional, reliable, and innovative technology services to help your business grow.</p>
+          <a href="https://www.facebook.com/PawelTechnologies.ltd/" target="_blank" rel="noopener">Tap to inquire for more →</a>
+        </div>
+      </article>
+
+      <article class="ins reveal">
+        <div class="ins-media">
+          <img src="images/logicgate-security-logo.jpeg" alt="LogicGate Security logo" loading="lazy">
+        </div>
+        <div class="ins-band"></div>
+        <div class="ins-body">
+          <div class="ins-meta"><span>LogicGATE Security</span><span></span></div>
+          <h3>Networking and CyberSecurity</h3>
+          <p>A Networking and cybersecurity company aimed at Configuring, deploying and troubleshooting Network, protecting systems, and data from cyber threats..</p>
+          <a href="#" target="_blank" rel="noopener">Tap to inquire for more →</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- ===== ABOUT ===== -->
 <section id="about" class="strip" style="border-bottom:none">
   <div class="wrap about-grid">
     <div class="about reveal">
